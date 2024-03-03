@@ -43,7 +43,8 @@ func validateCepLength(cep *string) error {
 
 func fetchCepFromServices(cep *string) (models.Result, error) {
 	services := map[string]models.Service{
-		"viacep": services.Viacep(cep),
+		"viacep":   services.Viacep(cep),
+		"correios": services.Correios(cep),
 	}
 
 	var wg sync.WaitGroup

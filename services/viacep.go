@@ -17,12 +17,13 @@ func Viacep(cep *string) models.Service {
 		if err != nil {
 			return models.Result{}, errors.New("failed fetching viacep")
 		}
+		defer response.Body.Close()
 
-		return parseResponse(response)
+		return parseViacepResponse(response)
 	}
 }
 
-func parseResponse(response *http.Response) (models.Result, error) {
+func parseViacepResponse(response *http.Response) (models.Result, error) {
 	data, err := io.ReadAll(response.Body)
 	if err != nil {
 		return models.Result{}, errors.New("failed reading viacep response")
