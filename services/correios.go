@@ -29,7 +29,7 @@ func Correios(cep *string) models.Service {
 		endpoint := "https://buscacepinter.correios.com.br/app/endereco/carrega-cep-endereco.php"
 
 		formData := url.Values{}
-		formData.Set("endereco", "66020625")
+		formData.Set("endereco", *cep)
 		formData.Set("tipoCEP", "ALL")
 
 		headers := map[string]string{
