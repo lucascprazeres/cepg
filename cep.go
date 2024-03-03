@@ -45,14 +45,15 @@ func fetchCepFromServices(cep *string) (models.Result, error) {
 	services := map[string]models.Service{
 		"viacep":   services.Viacep(cep),
 		"correios": services.Correios(cep),
+		"widenet":  services.Widenet(cep),
 	}
 
 	var wg sync.WaitGroup
 	resultCh := make(chan models.Result, 1)
 
-	for name, service := range services {
+	for _, service := range services {
 		wg.Add(1)
-		go fetchCep(name, service, &wg, &resultCh)
+		go fetchCep(service, &wg, &resultCh)
 	}
 
 	go func() {
@@ -65,7 +66,7 @@ func fetchCepFromServices(cep *string) (models.Result, error) {
 	return result, nil
 }
 
-func fetchCep(name string, service models.Service, wg *sync.WaitGroup, ch *chan models.Result) {
+func fetchCep(service models.Service, wg *sync.WaitGroup, ch *chan models.Result) {
 	defer wg.Done()
 
 	result, err := service()
